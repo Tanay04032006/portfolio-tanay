@@ -48,12 +48,12 @@ const page = () => {
       <div className="bg-black bg-transparent h-screen w-screen">
         <FloatingNav />
 
-        <div className="flex flex-col lg:flex-row items-center justify-center h-full mt-28 lg:mt-0">
+        <div className="flex flex-col lg:flex-row items-center justify-center h-full mt-28 md:mt-32 lg:mt-0">
           <div className="absolute mb-7 inset-0 z-[-1]">
             <LampDemo />
           </div>
-          {/* Add margin-top for smaller screens */}
-          <div className="ml-4 lg:ml-20 flex items-center justify-center mt-20 lg:mt-0"> {/* Added mt-20 for smaller screens */}
+          {/* Add margin-top for smaller and medium screens */}
+          <div className="ml-4 lg:ml-20 flex items-center justify-center mt-20 md:mt-32 lg:mt-0"> {/* Adjusted for small, medium, and large screens */}
             <ProfileCard />
           </div>
           <div className="relative flex justify-center items-center p-[20px] lg:p-[40px]">
@@ -63,7 +63,7 @@ const page = () => {
             />
           </div>
           <div className="flex flex-col text-center md:text-left max-w-2xl py-10 px-4">
-            <h1 className="text-5xl md:text-9xl font-extrabold">
+            <h1 className="text-5xl md:text-7xl lg:text-9xl font-extrabold">
               <span className="text-white">SOFTWARE</span>{" "}
               <span className="text-gray-700 dark:text-gray-500">ENGINEER</span>
             </h1>
@@ -83,7 +83,7 @@ const page = () => {
       <div className="flex flex-col z-10 md:flex-row items-center justify-center mx-auto w-full py-10 lg:py-20 px-4 lg:px-6 bg-gradient-to-r from-gray-50 to-gray-100 border-[20px] lg:border-[40px] border-b-slate-700">
         {/* Left Side: Heading */}
         <div className="flex-1 text-center md:text-left">
-          <h1 className="text-5xl md:text-9xl font-extrabold">
+          <h1 className="text-5xl md:text-7xl lg:text-9xl font-extrabold">
             <span className="text-black">ABOUT</span>{" "}
             <span className="text-gray-700">ME</span>
           </h1>
@@ -110,7 +110,7 @@ const page = () => {
 
       {/* Education Section */}
       <div className="flex flex-col items-center w-full mx-auto py-10 lg:py-20 px-4 lg:px-6 bg-gradient-to-r from-gray-100 to-gray-200">
-        <h1 className="text-5xl md:text-9xl font-extrabold text-center">
+        <h1 className="text-5xl md:text-7xl lg:text-9xl font-extrabold text-center">
           <span className="text-black">EDUCATION</span>
         </h1>
 
@@ -146,7 +146,7 @@ const page = () => {
       </div>
 
       {/* Skills Section */}
-      <h1 className="text-4xl md:text-8xl bg-slate-800 text-white font-extrabold text-center py-5">
+      <h1 className="text-4xl md:text-7xl lg:text-8xl bg-slate-800 text-white font-extrabold text-center py-5">
         SKILLS
       </h1>
       <div className="flex items-center bg-slate-800 text-white py-10 lg:py-20">
