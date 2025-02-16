@@ -52,7 +52,8 @@ const page = () => {
           <div className="absolute mb-7 inset-0 z-[-1]">
             <LampDemo />
           </div>
-          <div className="ml-4 lg:ml-20 flex items-center justify-center">
+          {/* Add margin-top for smaller screens */}
+          <div className="ml-4 lg:ml-20 flex items-center justify-center mt-20 lg:mt-0"> {/* Added mt-20 for smaller screens */}
             <ProfileCard />
           </div>
           <div className="relative flex justify-center items-center p-[20px] lg:p-[40px]">
