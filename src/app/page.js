@@ -48,7 +48,7 @@ const page = () => {
       <div className="bg-black bg-transparent h-screen w-screen">
         <FloatingNav />
 
-        <div className="flex flex-col lg:flex-row items-center justify-center h-full">
+        <div className="flex flex-col lg:flex-row items-center justify-center h-full mt-28 lg:mt-0">
           <div className="absolute mb-7 inset-0 z-[-1]">
             <LampDemo />
           </div>

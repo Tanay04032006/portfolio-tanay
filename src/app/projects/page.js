@@ -54,10 +54,8 @@ const Page = () => {
         </Link>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-4 lg:gap-[200px] p-4 lg:p-10 w-full max-w-7xl">
-        <div className="absolute mb-7 inset-0 z-[-1] w-full">
-          <LampDemo />
-        </div>
+      <div className="flex flex-col lg:flex-row gap-4 lg:gap-[200px] p-4 lg:p-10 w-full max-w-7xl mt-10 lg:mt-0">
+        
 
         {/* Left Section */}
         <div className="w-full lg:w-1/3 h-auto lg:h-screen flex flex-col justify-center items-center lg:sticky lg:top-0">

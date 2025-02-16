@@ -57,7 +57,7 @@ const ContactPage = () => {
       </div>
 
       {/* Page Title */}
-      <div className="text-center max-w-2xl py-8 px-4">
+      <div className="text-center max-w-2xl py-8 px-4 mt-10 lg:mt-10">
         <h1 className="text-5xl md:text-7xl lg:text-9xl font-extrabold">
           <span className="text-white">CONTACT</span>{" "}
           <span className="text-gray-700 dark:text-gray-500">ME</span>
