@@ -1,0 +1,126 @@
+"use client";
+
+import React from "react";
+import { FloatingNav } from "../components/Navbar";
+import toast, { Toaster } from "react-hot-toast";
+import Footer from "../components/Footer";
+
+const notify = () => toast.success("Message Sent!");
+
+const ContactPage = () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      name: e.target.name.value,
+      email: e.target.email.value,
+      message: e.target.message.value,
+    };
+
+    try {
+      await fetch(
+        process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+          mode: "no-cors",
+        }
+      );
+
+      notify(); // Show success toast
+      e.target.reset(); // Reset the form after submission
+    } catch (error) {
+      toast.error("Error sending message!");
+    }
+  };
+
+  return (
+    <div className="bg-black min-h-screen flex flex-col items-center text-white">
+      {/* Floating Navigation */}
+      <div className="mt-10">
+        <FloatingNav />
+      </div>
+
+      {/* Page Title */}
+      <div className="text-center max-w-2xl py-16">
+        <h1 className="text-9xl font-extrabold">
+          <span className="text-white">CONTACT</span>{" "}
+          <span className="text-gray-700 dark:text-gray-500">ME</span>
+        </h1>
+        <p className="text-lg text-gray-400 mt-4">
+          Reach out for collaboration, project inquiries, or just to say hi!
+        </p>
+      </div>
+
+      {/* Contact Form */}
+      <div className="bg-gray-900 p-10 rounded-3xl shadow-xl border border-gray-700 max-w-lg w-full">
+        <form className="space-y-6" onSubmit={handleSubmit}>
+          {/* Name Input */}
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium mb-2">
+              Name:
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              className="w-full px-5 py-3 rounded-xl bg-gray-800 border border-gray-700 
+                         focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none 
+                         transition duration-200"
+              required
+            />
+          </div>
+
+          {/* Email Input */}
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium mb-2">
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              className="w-full px-5 py-3 rounded-xl bg-gray-800 border border-gray-700 
+                         focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none 
+                         transition duration-200"
+              required
+            />
+          </div>
+
+          {/* Message Input */}
+          <div>
+            <label htmlFor="message" className="block text-sm font-medium mb-2">
+              Message:
+            </label>
+            <textarea
+              id="message"
+              name="message"
+              rows="4"
+              className="w-full px-5 py-3 rounded-xl bg-gray-800 border border-gray-700 
+                         focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none 
+                         transition duration-200 resize-none"
+              required
+            ></textarea>
+          </div>
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 
+                       hover:to-blue-600 text-white font-semibold py-3 px-4 rounded-xl 
+                       transition duration-300 shadow-md hover:shadow-lg"
+          >
+            Send Message
+          </button>
+        </form>
+        <Toaster />
+      </div>
+      <div className="mt-10">
+      <Footer />
+      </div>
+    </div>
+  );
+};
+
+export default ContactPage;
