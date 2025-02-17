@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie"; // Import js-cookie
 import { FloatingNav } from "../components/Navbar";
 import toast, { Toaster } from "react-hot-toast";
 import Footer from "../components/Footer";
@@ -10,8 +11,21 @@ import { IconBrandGithub } from "@tabler/icons-react";
 const notify = () => toast.success("Message Sent!");
 
 const ContactPage = () => {
+  const [isCooldown, setIsCooldown] = useState(false);
+
+  useEffect(() => {
+    // Check if cooldown exists in cookies
+    const cooldownEnd = Cookies.get("cooldownEnd");
+    if (cooldownEnd && Date.now() < parseInt(cooldownEnd, 10)) {
+      setIsCooldown(true);
+      const remainingTime = parseInt(cooldownEnd, 10) - Date.now();
+      setTimeout(() => setIsCooldown(false), remainingTime);
+    }
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isCooldown) return;
 
     const formData = {
       name: e.target.name.value,
@@ -20,18 +34,23 @@ const ContactPage = () => {
     };
 
     try {
-      await fetch(
-        process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
-          mode: "no-cors",
-        }
-      );
+      await fetch(process.env.NEXT_PUBLIC_GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+        mode: "no-cors",
+      });
 
-      notify(); // Show success toast
-      e.target.reset(); // Reset the form after submission
+      notify();
+      e.target.reset();
+
+      // Set cooldown for 10 minutes (600,000 ms)
+      const cooldownTime = Date.now() + 10 * 60 * 1000;
+      Cookies.set("cooldownEnd", cooldownTime, { expires: 1 / 144, path: "/" }); // Expire in 10 minutes
+      setIsCooldown(true);
+
+      // Remove cooldown after 10 minutes
+      setTimeout(() => setIsCooldown(false), 10 * 60 * 1000);
     } catch (error) {
       toast.error("Error sending message!");
     }
@@ -47,16 +66,15 @@ const ContactPage = () => {
         >
           <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#E2CBFF_0%,#393BB2_50%,#E2CBFF_100%)]" />
           <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-slate-950 px-4 py-1 text-sm font-medium text-white backdrop-blur-3xl">
-          <span className="hidden lg:inline">Github</span> <IconBrandGithub className="ml-2" />
+            <span className="hidden lg:inline">Github</span> <IconBrandGithub className="ml-2" />
           </span>
         </Link>
       </div>
-      {/* Floating Navigation */}
+
       <div className="mt-10 w-full px-4">
         <FloatingNav />
       </div>
 
-      {/* Page Title */}
       <div className="text-center max-w-2xl py-8 px-4 mt-10 lg:mt-10">
         <h1 className="text-5xl md:text-7xl lg:text-9xl font-extrabold">
           <span className="text-white">CONTACT</span>{" "}
@@ -67,14 +85,10 @@ const ContactPage = () => {
         </p>
       </div>
 
-      {/* Contact Form */}
       <div className="bg-gray-900 p-6 md:p-10 rounded-3xl shadow-xl border border-gray-700 max-w-lg w-full mx-4">
         <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-          {/* Name Input */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium mb-2">
-              Name:
-            </label>
+            <label htmlFor="name" className="block text-sm font-medium mb-2">Name:</label>
             <input
               type="text"
               id="name"
@@ -86,11 +100,8 @@ const ContactPage = () => {
             />
           </div>
 
-          {/* Email Input */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-2">
-              Email:
-            </label>
+            <label htmlFor="email" className="block text-sm font-medium mb-2">Email:</label>
             <input
               type="email"
               id="email"
@@ -102,11 +113,8 @@ const ContactPage = () => {
             />
           </div>
 
-          {/* Message Input */}
           <div>
-            <label htmlFor="message" className="block text-sm font-medium mb-2">
-              Message:
-            </label>
+            <label htmlFor="message" className="block text-sm font-medium mb-2">Message:</label>
             <textarea
               id="message"
               name="message"
@@ -118,14 +126,16 @@ const ContactPage = () => {
             ></textarea>
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 
-                       hover:to-blue-600 text-white font-semibold py-2 md:py-3 px-4 rounded-xl 
-                       transition duration-300 shadow-md hover:shadow-lg"
+            className={`w-full font-semibold py-2 md:py-3 px-4 rounded-xl transition duration-300 shadow-md hover:shadow-lg ${
+              isCooldown
+                ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                : "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 text-white"
+            }`}
+            disabled={isCooldown}
           >
-            Send Message
+            {isCooldown ? "Please wait 10 minutes" : "Send Message"}
           </button>
         </form>
         <Toaster />
